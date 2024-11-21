@@ -1,11 +1,11 @@
-FROM timbru31/ruby-node:2.7 as builder
+FROM timbru31/ruby-node:3.0 as builder
 
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-# Update RubyGems first
-RUN gem update --system
+# Install specific bundler version
+RUN gem install bundler -v 2.3.26
 
 # Install gems in correct order with specific versions
 RUN gem install ffi -v 1.17.0
@@ -20,7 +20,7 @@ RUN npm install -g grunt-cli
 COPY . /usr/src/app
 RUN bower --allow-root install
 RUN npm install
-RUN bundle install --jobs 4 --retry 3
+RUN bundle _2.3.26_ install --jobs 4 --retry 3
 RUN grunt prod --force
 
 FROM nginx:1.19.3
