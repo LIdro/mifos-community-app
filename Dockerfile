@@ -25,5 +25,24 @@ RUN grunt prod --force
 
 FROM nginx:1.19.3
 COPY --from=builder /usr/src/app/dist/community-app /usr/share/nginx/html
+
+# Add environment variable handling
+ENV BASE_API_URL=https://demo.fineract.dev
+ENV TENANT_IDENTIFIER=default
+
+# Create config file from template
+RUN echo '<!DOCTYPE html>\n\
+<html>\n\
+<head>\n\
+    <script>\n\
+        window.baseApiUrl = "${BASE_API_URL}";\n\
+        window.tenantIdentifier = "${TENANT_IDENTIFIER}";\n\
+    </script>\n\
+</head>\n\
+<body>\n\
+    <script src="scripts/config.js"></script>\n\
+</body>\n\
+</html>' > /usr/share/nginx/html/config.html
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
