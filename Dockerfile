@@ -4,12 +4,15 @@ RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-# Install specific versions of gems to ensure compatibility
-RUN gem install compass -v 1.0.3
+# Update RubyGems first
+RUN gem update --system
+
+# Install gems in correct order with specific versions
+RUN gem install ffi -v 1.17.0
 RUN gem install sass -v 3.4.25
 RUN gem install chunky_png -v 1.4.0
 RUN gem install rb-fsevent -v 0.11.2
-RUN gem install ffi -v 1.15.5
+RUN gem install compass -v 1.0.3
 
 COPY package.json /usr/src/app/package.json
 RUN npm install -g bower
