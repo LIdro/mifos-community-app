@@ -1,9 +1,12 @@
-FROM timbru31/ruby-node:2.7 as builder
+FROM timbru31/ruby-node:3.2 as builder
 
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json /usr/src/app/package.json
+
+# Update RubyGems to latest version
+RUN gem update --system
 
 RUN npm install -g bower
 RUN npm install -g grunt-cli
