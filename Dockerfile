@@ -27,8 +27,20 @@ FROM nginx:1.19.3
 COPY --from=builder /usr/src/app/dist/community-app /usr/share/nginx/html
 
 # Add environment variable handling
-ENV BASE_API_URL=https://demo.fineract.dev
+ENV BASE_API_URL=https://bank.fluidefinance.io
 ENV TENANT_IDENTIFIER=default
+
+# Create nginx config file
+RUN echo 'server { \n\
+    listen 80; \n\
+    server_name localhost; \n\
+    root /usr/share/nginx/html; \n\
+    index index.html; \n\
+    location / { \n\
+        try_files $uri $uri/ /index.html; \n\
+        add_header Access-Control-Allow-Origin *; \n\
+    } \n\
+}' > /etc/nginx/conf.d/default.conf
 
 # Create config file from template
 RUN echo '<!DOCTYPE html>\n\
