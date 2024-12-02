@@ -27,7 +27,7 @@ FROM nginx:1.19.3
 COPY --from=builder /usr/src/app/dist/community-app /usr/share/nginx/html
 
 # Add environment variable handling
-ENV BASE_API_URL=https://bank.fluidefinance.io
+ENV BASE_API_URL=http://fineract-app-xhihnx-0c02d8-188-245-201-47.traefik.me
 ENV TENANT_IDENTIFIER=default
 
 # Create nginx config file
